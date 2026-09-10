@@ -77,3 +77,21 @@ def send_booking_confirmation(customer_email, customer_name, reservation):
         subject="✅ Your Table Reservation is Confirmed!",
         html_content=html_content
     )
+
+
+def send_booking_rejected(customer_email, customer_name, reservation):
+    """Sent when an admin rejects a customer's reservation."""
+
+    html_content = render_template(
+        "emails/booking_rejected.html",
+        customer_name=customer_name,
+        reservation=reservation,
+        search_url=url_for("main.search_tables", _external=True)
+    )
+
+    return send_email(
+        to_email=customer_email,
+        to_name=customer_name,
+        subject="Update on Your Table Reservation",
+        html_content=html_content
+    )
