@@ -393,6 +393,34 @@ table.app-table {
     color: #fff;
 }
 
+.badge-cancelled {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-muted);
+}
+
+/* ---------- Filter panel (admin reservations) ---------- */
+
+.filter-form {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.filter-form .field {
+    margin-bottom: 0;
+    min-width: 170px;
+}
+
+.filter-form .field select {
+    color: #fff;
+}
+
+.filter-form .field select option {
+    color: #222;
+}
+
 /* ---------- Flash messages ---------- */
 
 .flashes {

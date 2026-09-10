@@ -17,6 +17,7 @@
                 <th>Guests</th>
                 <th>Table</th>
                 <th>Status</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -32,14 +33,26 @@
                         <span class="badge badge-success">{{ reservation.status }}</span>
                     {% elif reservation.status == "Rejected" %}
                         <span class="badge badge-danger">{{ reservation.status }}</span>
+                    {% elif reservation.status == "Cancelled" %}
+                        <span class="badge badge-cancelled">{{ reservation.status }}</span>
                     {% else %}
                         <span class="badge badge-secondary">{{ reservation.status }}</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if reservation.id in cancel_forms %}
+                    <form method="POST" action="{{ url_for('main.cancel_reservation', id=reservation.id) }}" onsubmit="return confirm('Cancel this reservation?');">
+                        {{ cancel_forms[reservation.id].hidden_tag() }}
+                        {{ cancel_forms[reservation.id].submit(class="btn btn-danger btn-sm") }}
+                    </form>
+                    {% else %}
+                        <span class="text-muted">&mdash;</span>
                     {% endif %}
                 </td>
             </tr>
             {% else %}
             <tr class="empty-row">
-                <td colspan="5">You have no reservations yet.</td>
+                <td colspan="6">You have no reservations yet.</td>
             </tr>
             {% endfor %}
 

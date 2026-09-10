@@ -21,7 +21,9 @@ from .forms import (
     TableForm,
     ImageUploadForm,
     TableSearchForm,
-    ReserveTableForm
+    ReserveTableForm,
+    CancelReservationForm,
+    ProfileForm
 )
 
 from flask import Blueprint
@@ -466,11 +468,100 @@ def my_reservations():
 
     reservations = Reservation.query.filter_by(
         user_id=current_user.id
+    ).order_by(
+        Reservation.reservation_date,
+        Reservation.reservation_time
     ).all()
+
+    cancel_forms = {
+        r.id: CancelReservationForm()
+        for r in reservations
+        if r.status in ("Pending", "Approved")
+    }
 
     return render_template(
         "my_reservations.html",
-        reservations=reservations
+        reservations=reservations,
+        cancel_forms=cancel_forms
+    )
+
+
+@main.route("/reservation/cancel/<int:id>", methods=["POST"])
+@login_required
+def cancel_reservation(id):
+
+    reservation = Reservation.query.get_or_404(id)
+
+    if reservation.user_id != current_user.id:
+
+        flash("You can't cancel someone else's reservation.")
+
+        return redirect(
+            url_for("main.my_reservations")
+        )
+
+    if reservation.status not in ("Pending", "Approved"):
+
+        flash("That reservation can no longer be cancelled.")
+
+        return redirect(
+            url_for("main.my_reservations")
+        )
+
+    reservation.status = "Cancelled"
+
+    db.session.commit()
+
+    flash("Reservation cancelled.")
+
+    return redirect(
+        url_for("main.my_reservations")
+    )
+
+
+@main.route("/profile", methods=["GET", "POST"])
+@login_required
+def profile():
+
+    form = ProfileForm()
+
+    if request.method == "GET":
+        form.username.data = current_user.username
+
+    if form.validate_on_submit():
+
+        if not check_password_hash(
+            current_user.password_hash,
+            form.current_password.data
+        ):
+            form.current_password.errors.append("Current password is incorrect.")
+
+        elif (
+            form.username.data != current_user.username
+            and User.query.filter_by(username=form.username.data).first()
+        ):
+            form.username.errors.append("That username is already taken.")
+
+        else:
+
+            current_user.username = form.username.data
+
+            if form.new_password.data:
+                current_user.password_hash = generate_password_hash(
+                    form.new_password.data
+                )
+
+            db.session.commit()
+
+            flash("Profile updated successfully!")
+
+            return redirect(
+                url_for("main.profile")
+            )
+
+    return render_template(
+        "profile.html",
+        form=form
     )
 
 
@@ -479,13 +570,36 @@ def my_reservations():
 @admin_required
 def admin_reservations():
 
-    reservations = Reservation.query.order_by(
-        Reservation.reservation_date
+    query = Reservation.query.join(User, Reservation.user_id == User.id)
+
+    status_filter = request.args.get("status", "")
+    date_filter = request.args.get("date", "")
+    customer_filter = request.args.get("customer", "").strip()
+
+    if status_filter:
+        query = query.filter(Reservation.status == status_filter)
+
+    if date_filter:
+        try:
+            parsed_date = datetime.strptime(date_filter, "%Y-%m-%d").date()
+            query = query.filter(Reservation.reservation_date == parsed_date)
+        except ValueError:
+            date_filter = ""
+
+    if customer_filter:
+        query = query.filter(User.username.ilike(f"%{customer_filter}%"))
+
+    reservations = query.order_by(
+        Reservation.reservation_date,
+        Reservation.reservation_time
     ).all()
 
     return render_template(
         "admin_reservations.html",
-        reservations=reservations
+        reservations=reservations,
+        status_filter=status_filter,
+        date_filter=date_filter,
+        customer_filter=customer_filter
     )
 
 @main.route("/admin/reservation/approve/<int:id>")

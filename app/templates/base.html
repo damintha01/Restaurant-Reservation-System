@@ -38,7 +38,7 @@
                     <li><a class="nav-link" href="{{ url_for('main.my_reservations') }}">My Reservations</a></li>
                 {% endif %}
 
-                <li><span class="nav-user">Hi, {{ current_user.username }}</span></li>
+                <li><a class="nav-link nav-user" href="{{ url_for('main.profile') }}">Hi, {{ current_user.username }}</a></li>
                 <li><a class="nav-link" href="{{ url_for('main.logout') }}">Logout</a></li>
 
             {% else %}

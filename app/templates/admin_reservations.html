@@ -8,7 +8,40 @@
     <h1>Reservations</h1>
 </div>
 
-<div class="glass-card table-wrap">
+<div class="glass-card">
+    <form method="GET" action="{{ url_for('main.admin_reservations') }}" class="filter-form">
+
+        <div class="field">
+            <label for="filter-customer">Customer</label>
+            <input type="text" id="filter-customer" name="customer" placeholder="Search by username" value="{{ customer_filter }}">
+        </div>
+
+        <div class="field">
+            <label for="filter-date">Date</label>
+            <input type="date" id="filter-date" name="date" value="{{ date_filter }}">
+        </div>
+
+        <div class="field">
+            <label for="filter-status">Status</label>
+            <select id="filter-status" name="status">
+                <option value="" {% if not status_filter %}selected{% endif %}>All</option>
+                <option value="Pending" {% if status_filter == "Pending" %}selected{% endif %}>Pending</option>
+                <option value="Approved" {% if status_filter == "Approved" %}selected{% endif %}>Approved</option>
+                <option value="Rejected" {% if status_filter == "Rejected" %}selected{% endif %}>Rejected</option>
+                <option value="Cancelled" {% if status_filter == "Cancelled" %}selected{% endif %}>Cancelled</option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Filter</button>
+
+        {% if status_filter or date_filter or customer_filter %}
+            <a href="{{ url_for('main.admin_reservations') }}" class="btn btn-outline">Clear</a>
+        {% endif %}
+
+    </form>
+</div>
+
+<div class="glass-card table-wrap" style="margin-top:1.5rem;">
     <table class="app-table">
         <thead>
             <tr>
@@ -35,6 +68,8 @@
                         <span class="badge badge-success">{{ reservation.status }}</span>
                     {% elif reservation.status == "Rejected" %}
                         <span class="badge badge-danger">{{ reservation.status }}</span>
+                    {% elif reservation.status == "Cancelled" %}
+                        <span class="badge badge-cancelled">{{ reservation.status }}</span>
                     {% else %}
                         <span class="badge badge-secondary">{{ reservation.status }}</span>
                     {% endif %}

@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}My Profile{% endblock %}
+
+{% block content %}
+
+<div class="glass-card form-card">
+
+    <h2>My Profile</h2>
+
+    <form method="POST">
+        {{ form.hidden_tag() }}
+
+        <div class="field">
+            {{ form.username.label }}
+            {{ form.username() }}
+            {% for error in form.username.errors %}
+                <div class="field-error">{{ error }}</div>
+            {% endfor %}
+        </div>
+
+        <div class="field">
+            {{ form.current_password.label }}
+            {{ form.current_password(placeholder="Required to save changes") }}
+            {% for error in form.current_password.errors %}
+                <div class="field-error">{{ error }}</div>
+            {% endfor %}
+        </div>
+
+        <div class="field">
+            {{ form.new_password.label }}
+            {{ form.new_password(placeholder="Leave blank to keep your current password") }}
+            {% for error in form.new_password.errors %}
+                <div class="field-error">{{ error }}</div>
+            {% endfor %}
+        </div>
+
+        {{ form.submit(class="btn btn-primary btn-block") }}
+    </form>
+
+</div>
+
+{% endblock %}

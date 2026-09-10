@@ -6,6 +6,8 @@ from .config import Config
 from .models import db, login_manager, User
 from .routes import main
 import cloudinary
+from app.models import User
+from werkzeug.security import generate_password_hash
 
 
 def create_app():
@@ -24,6 +26,24 @@ def create_app():
 
     with app.app_context():
         db.create_all()
+        admin = User.query.filter_by(
+        email="admin@gmail.com"
+    ).first()
+
+    if not admin:
+
+        admin = User(
+            username="admin",
+            email="admin@gmail.com",
+            password_hash=generate_password_hash(
+                "Admin123"
+            ),
+            role="admin"
+        )
+
+        db.session.add(admin)
+        db.session.commit()
+        
 
         # db.create_all() only creates missing tables, it doesn't add new
         # columns to a table that already exists. Since this project has
@@ -46,8 +66,10 @@ def create_app():
                     )
                 )
                 db.session.commit()
+    
 
     app.register_blueprint(main)
+    
 
     # Makes {{ current_year }} available in every template (used in the footer)
     @app.context_processor

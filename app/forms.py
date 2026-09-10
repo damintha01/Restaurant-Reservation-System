@@ -10,7 +10,8 @@ from wtforms import (
 from wtforms.validators import (
     DataRequired,
     Email,
-    Length
+    Length,
+    Optional
 )
 from flask_wtf.file import (
     FileField,
@@ -144,6 +145,38 @@ class ReserveTableForm(FlaskForm):
     )
 
     submit = SubmitField("Reserve This Table")
+
+class CancelReservationForm(FlaskForm):
+    """Tiny confirm-and-CSRF form for the Cancel button on My Reservations."""
+
+    submit = SubmitField("Cancel Reservation")
+
+
+class ProfileForm(FlaskForm):
+
+    username = StringField(
+        "Username",
+        validators=[
+            DataRequired(),
+            Length(min=3, max=50)
+        ]
+    )
+
+    current_password = PasswordField(
+        "Current Password",
+        validators=[DataRequired()]
+    )
+
+    new_password = PasswordField(
+        "New Password (leave blank to keep it)",
+        validators=[
+            Optional(),
+            Length(min=6)
+        ]
+    )
+
+    submit = SubmitField("Save Changes")
+
 
 class ImageUploadForm(FlaskForm):
 
