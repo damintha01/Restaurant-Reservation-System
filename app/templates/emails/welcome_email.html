@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Welcome</title>
+</head>
+<body style="margin:0; padding:0; background-color:#f2f2f7; font-family:'Segoe UI', Helvetica, Arial, sans-serif;">
+
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f2f2f7; padding:32px 12px;">
+    <tr>
+        <td align="center">
+
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px; background-color:#ffffff; border-radius:16px; overflow:hidden; box-shadow:0 10px 30px rgba(0,0,0,0.08);">
+
+                <!-- Header banner -->
+                <tr>
+                    <td style="background-color:#6a11cb; background-image:linear-gradient(120deg,#6a11cb,#2575fc); padding:44px 32px; text-align:center;">
+                        <div style="font-size:42px; line-height:1;">🍽️</div>
+                        <h1 style="margin:16px 0 4px; color:#ffffff; font-size:24px; font-weight:700;">
+                            Welcome Aboard!
+                        </h1>
+                        <p style="margin:0; color:rgba(255,255,255,0.9); font-size:14px;">
+                            We're so glad you joined us
+                        </p>
+                    </td>
+                </tr>
+
+                <!-- Body -->
+                <tr>
+                    <td style="padding:36px 32px;">
+                        <p style="margin:0 0 16px; color:#222222; font-size:16px; line-height:1.6;">
+                            Hi <strong>{{ customer_name }}</strong>,
+                        </p>
+
+                        <p style="margin:0 0 16px; color:#444444; font-size:15px; line-height:1.7;">
+                            Thank you for creating an account with our Restaurant
+                            Reservation System. Your table is just a few clicks away.
+                        </p>
+
+                        <p style="margin:0 0 24px; color:#444444; font-size:15px; line-height:1.7;">
+                            Here's what you can do now:
+                        </p>
+
+                        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:28px;">
+                            <tr>
+                                <td style="padding:10px 0; color:#333333; font-size:14px;">
+                                    📅&nbsp;&nbsp;Book a table in seconds
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding:10px 0; color:#333333; font-size:14px; border-top:1px solid #eeeeee;">
+                                    📋&nbsp;&nbsp;Track the status of your reservations
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding:10px 0; color:#333333; font-size:14px; border-top:1px solid #eeeeee;">
+                                    🖼️&nbsp;&nbsp;Browse photos from our gallery
+                                </td>
+                            </tr>
+                        </table>
+
+                        <!-- CTA button -->
+                        <table role="presentation" cellpadding="0" cellspacing="0" style="margin:0 auto;">
+                            <tr>
+                                <td style="border-radius:50px; background-color:#2575fc; background-image:linear-gradient(120deg,#ff6a9c,#2575fc);">
+                                    <a href="{{ login_url }}" style="display:inline-block; padding:14px 32px; color:#ffffff; font-size:15px; font-weight:700; text-decoration:none; border-radius:50px;">
+                                        Log In &amp; Book a Table
+                                    </a>
+                                </td>
+                            </tr>
+                        </table>
+
+                    </td>
+                </tr>
+
+                <!-- Footer -->
+                <tr>
+                    <td style="background-color:#fafafa; padding:24px 32px; text-align:center; border-top:1px solid #eeeeee;">
+                        <p style="margin:0 0 4px; color:#888888; font-size:12px;">
+                            93 Dalada Street, Kandy, Sri Lanka &nbsp;|&nbsp; +94 (812) 306-050
+                        </p>
+                        <p style="margin:0; color:#aaaaaa; font-size:12px;">
+                            We look forward to serving you.
+                        </p>
+                    </td>
+                </tr>
+
+            </table>
+
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>

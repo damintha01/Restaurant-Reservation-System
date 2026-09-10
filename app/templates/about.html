@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %}About Us{% endblock %}
+
+{% block content %}
+
+<div class="gallery-hero">
+    <h1>About Our Restaurant</h1>
+    <p>Good food, great company, and a table always ready for you</p>
+</div>
+
+<div class="card-grid">
+
+    <div class="glass-card action-card">
+        <div class="icon">👨‍🍳</div>
+        <h3>Our Story</h3>
+        <p>
+            We started as a small family kitchen and grew into a place
+            where neighbors and travelers alike come to share a meal.
+            Every dish is made fresh, every guest is treated like family.
+        </p>
+    </div>
+
+    <div class="glass-card action-card">
+        <div class="icon">🌿</div>
+        <h3>Our Ingredients</h3>
+        <p>
+            We work with local farmers and suppliers to bring you fresh,
+            seasonal ingredients in every dish we serve.
+        </p>
+    </div>
+
+    <div class="glass-card action-card">
+        <div class="icon">📅</div>
+        <h3>Easy Reservations</h3>
+        <p>
+            Book a table online in seconds, track your reservation status,
+            and get an email confirmation the moment it's approved.
+        </p>
+    </div>
+
+</div>
+
+<div class="glass-card" style="margin-top:1.5rem;">
+    <h3 style="margin-top:0;">Visit Us</h3>
+    <p class="text-muted" style="margin-bottom:1.5rem;">
+        We'd love to welcome you to our table. Here's how to find us and reach us.
+    </p>
+
+    <div class="card-grid">
+        <div>
+            <h4 style="margin:0 0 0.4rem;">📍 Address</h4>
+            <p class="text-muted" style="margin:0;">93 Dalada Street, Kandy, Sri Lanka</p>
+        </div>
+        <div>
+            <h4 style="margin:0 0 0.4rem;">📞 Phone</h4>
+            <p class="text-muted" style="margin:0;">+94 (812) 306-050</p>
+        </div>
+        <div>
+            <h4 style="margin:0 0 0.4rem;">🕒 Hours</h4>
+            <p class="text-muted" style="margin:0;">Mon–Fri: 11am – 10pm<br>Sat–Sun: 10am – 11pm</p>
+        </div>
+    </div>
+</div>
+
+<div class="text-center" style="margin-top:2rem;">
+    <a href="{{ url_for('main.gallery') }}" class="btn btn-outline">View Our Gallery</a>
+    {% if not current_user.is_authenticated %}
+        <a href="{{ url_for('main.index', tab='register') }}" class="btn btn-primary">Book a Table</a>
+    {% else %}
+        <a href="{{ url_for('main.search_tables') }}" class="btn btn-primary">Book a Table</a>
+    {% endif %}
+</div>
+
+{% endblock %}

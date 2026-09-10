@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>KAndyn Restaurant</title>
+
+    <!-- Elegant Google font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <link href="{{ url_for('static', filename='css/home.css') }}" rel="stylesheet">
+</head>
+<body class="auth-body">
+
+    <!-- Top bar: brand name + links to the public pages -->
+    <div class="auth-topbar">
+        <span>🍽️ KAndyn Restaurant</span>
+        <span>
+            <a href="{{ url_for('main.about') }}">About</a>
+            &nbsp;&nbsp;
+            <a href="{{ url_for('main.gallery') }}">View Gallery &rarr;</a>
+        </span>
+    </div>
+
+    <!-- Flash messages (e.g. "Registration successful!") -->
+    <div class="auth-flashes">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="auth-flash">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <div class="auth-card">
+
+        <!-- Left side: branding -->
+        <div class="auth-brand">
+            <div class="logo">🍽️</div>
+            <h1>Welcome Back</h1>
+            <p>
+                Book your table in seconds, track your reservations,
+                and never miss a great meal with us.
+            </p>
+            <a class="gallery-link" href="{{ url_for('main.gallery') }}">Browse Our Gallery</a>
+        </div>
+
+        <!-- Right side: Login / Register forms -->
+        <div class="auth-forms">
+
+            <!-- Sliding pill toggle between the two forms -->
+            <div class="tab-switch {% if active_tab == 'register' %}show-register{% endif %}" id="tabSwitch">
+                <div class="tab-indicator"></div>
+                <button type="button" class="tab-btn tab-login" onclick="showForm('login')">Login</button>
+                <button type="button" class="tab-btn tab-register" onclick="showForm('register')">Register</button>
+            </div>
+
+            <!-- Login form -->
+            <div class="auth-form-panel {% if active_tab != 'register' %}active{% endif %}" id="loginPanel">
+                <h2>Login</h2>
+
+                <form method="POST" action="{{ url_for('main.login') }}">
+                    {{ login_form.hidden_tag() }}
+
+                    <div class="auth-field">
+                        {{ login_form.email.label }}
+                        {{ login_form.email(class="auth-input", placeholder="you@example.com") }}
+                        {% for error in login_form.email.errors %}
+                            <div class="field-error">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="auth-field">
+                        {{ login_form.password.label }}
+                        {{ login_form.password(class="auth-input", placeholder="••••••••") }}
+                        {% for error in login_form.password.errors %}
+                            <div class="field-error">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <button type="submit" class="auth-submit">Login</button>
+                </form>
+
+                <p class="auth-switch-text">
+                    Don't have an account?
+                    <button type="button" onclick="showForm('register')">Register</button>
+                </p>
+            </div>
+
+            <!-- Register form -->
+            <div class="auth-form-panel {% if active_tab == 'register' %}active{% endif %}" id="registerPanel">
+                <h2>Create Account</h2>
+
+                <form method="POST" action="{{ url_for('main.register') }}">
+                    {{ register_form.hidden_tag() }}
+
+                    <div class="auth-field">
+                        {{ register_form.username.label }}
+                        {{ register_form.username(class="auth-input", placeholder="Your name") }}
+                        {% for error in register_form.username.errors %}
+                            <div class="field-error">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="auth-field">
+                        {{ register_form.email.label }}
+                        {{ register_form.email(class="auth-input", placeholder="you@example.com") }}
+                        {% for error in register_form.email.errors %}
+                            <div class="field-error">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="auth-field">
+                        {{ register_form.password.label }}
+                        {{ register_form.password(class="auth-input", placeholder="At least 6 characters") }}
+                        {% for error in register_form.password.errors %}
+                            <div class="field-error">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <button type="submit" class="auth-submit">Create Account</button>
+                </form>
+
+                <p class="auth-switch-text">
+                    Already have an account?
+                    <button type="button" onclick="showForm('login')">Login</button>
+                </p>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // Simple tab switching: show one form panel, hide the other,
+        // and slide the pill indicator to match.
+        function showForm(which) {
+            const tabSwitch = document.getElementById("tabSwitch");
+            const loginPanel = document.getElementById("loginPanel");
+            const registerPanel = document.getElementById("registerPanel");
+
+            if (which === "register") {
+                tabSwitch.classList.add("show-register");
+                registerPanel.classList.add("active");
+                loginPanel.classList.remove("active");
+            } else {
+                tabSwitch.classList.remove("show-register");
+                loginPanel.classList.add("active");
+                registerPanel.classList.remove("active");
+            }
+        }
+    </script>
+
+</body>
+</html>

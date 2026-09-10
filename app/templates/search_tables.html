@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block title %}Search &amp; Book{% endblock %}
+
+{% block content %}
+
+<div class="glass-card search-panel">
+
+    <span class="panel-eyebrow">
+        <span class="material-symbols-outlined" style="font-size:16px;">restaurant</span>
+        Real-time availability
+    </span>
+    <h2 style="margin:0 0 1.2rem;">Find an Available Table</h2>
+
+    <form method="POST" class="search-form-grid">
+        {{ form.hidden_tag() }}
+
+        <div class="field">
+            {{ form.reservation_date.label }}
+            {{ form.reservation_date() }}
+            {% for error in form.reservation_date.errors %}
+                <div class="field-error">{{ error }}</div>
+            {% endfor %}
+        </div>
+
+        <div class="field">
+            {{ form.reservation_time.label }}
+            {{ form.reservation_time() }}
+            {% for error in form.reservation_time.errors %}
+                <div class="field-error">{{ error }}</div>
+            {% endfor %}
+        </div>
+
+        <div class="field">
+            {{ form.guests.label }}
+            {{ form.guests(placeholder="Number of guests") }}
+            {% for error in form.guests.errors %}
+                <div class="field-error">{{ error }}</div>
+            {% endfor %}
+        </div>
+
+        {{ form.submit(class="btn btn-primary") }}
+    </form>
+
+</div>
+
+{% if searched %}
+
+    <div class="results-toolbar">
+        <div>
+            <span class="eyebrow-label">Verified availability</span>
+            <h2 style="margin:0;">Select Your Table</h2>
+        </div>
+        <span class="text-muted" style="font-size:0.9rem;">
+            {{ tables|length }} table{{ "s" if tables|length != 1 else "" }} free for
+            {{ form.reservation_time.data }} on {{ form.reservation_date.data }}
+        </span>
+    </div>
+
+    {% if tables %}
+
+        <div class="card-grid">
+            {% for table in tables %}
+            <div class="glass-card result-card">
+
+                <div class="result-photo-wrap">
+                    {% if table.image_url %}
+                        <img src="{{ table.image_url }}" alt="Table {{ table.table_number }}">
+                    {% else %}
+                        <div class="table-photo-placeholder" style="border-radius:0;">🪑</div>
+                    {% endif %}
+                    <span class="table-badge">Table {{ table.table_number }}</span>
+                    <span class="seats-badge">
+                        <span class="material-symbols-outlined" style="font-size:14px;">person</span>
+                        {{ table.capacity }} seats
+                    </span>
+                </div>
+
+                <div class="result-body">
+                    <h3 style="margin:0;">Table {{ table.table_number }}</h3>
+                    <p>Free at your chosen date and time.</p>
+
+                    <form method="POST" action="{{ url_for('main.reserve_table', table_id=table.id) }}">
+                        {{ reserve_forms[table.id].hidden_tag() }}
+                        {{ reserve_forms[table.id].submit(class="btn btn-primary btn-block") }}
+                    </form>
+                </div>
+
+            </div>
+            {% endfor %}
+        </div>
+
+    {% else %}
+
+        <div class="glass-card text-center">
+            <p class="text-muted" style="margin:0;">
+                No tables are free for that date, time, and party size. Try a different time.
+            </p>
+        </div>
+
+    {% endif %}
+
+{% endif %}
+
+{% endblock %}

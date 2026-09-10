@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+
+<div class="glass-card welcome-banner">
+    <div class="welcome-copy">
+        <span class="eyebrow-pill">
+            <span class="material-symbols-outlined" style="font-size:16px;">badge</span>
+            {{ "Staff account" if current_user.role == "admin" else "Guest account" }}
+        </span>
+        <h1>Welcome back, {{ current_user.username }}!</h1>
+        <p>Search for a table, track your bookings, or head into the admin tools below.</p>
+    </div>
+</div>
+
+<div class="bento-grid">
+
+    <div class="bento-hero glass-card bento-card">
+        <div>
+            <div class="bento-top">
+                <span class="eyebrow-pill">
+                    <span class="material-symbols-outlined" style="font-size:16px;">room_service</span>
+                    Reservations
+                </span>
+                <div class="bento-icon">
+                    <span class="material-symbols-outlined">dining</span>
+                </div>
+            </div>
+            <h2>Find a table</h2>
+            <p class="lede">Search by date, time, and party size to see every table that's actually free — with a photo of each — and reserve one in one click.</p>
+        </div>
+        <a href="{{ url_for('main.search_tables') }}" class="btn btn-primary" style="align-self:flex-start;">
+            <span class="material-symbols-outlined" style="font-size:18px;">search</span>
+            Find an Open Table
+        </a>
+    </div>
+
+    <div class="bento-side glass-card bento-card">
+        <div>
+            <div class="bento-top">
+                <span class="eyebrow-pill">
+                    <span class="material-symbols-outlined" style="font-size:16px;">calendar_month</span>
+                    Your bookings
+                </span>
+                <span class="badge badge-secondary">{{ reservation_count }} total</span>
+            </div>
+
+            {% if next_reservation %}
+            <div class="next-reservation">
+                <div class="nr-top">
+                    <div>
+                        {% if next_reservation.status == "Approved" %}
+                            <span class="badge badge-success">Approved</span>
+                        {% else %}
+                            <span class="badge badge-secondary">Pending</span>
+                        {% endif %}
+                        <div class="nr-table">Table {{ next_reservation.table.table_number }}</div>
+                    </div>
+                    <div class="nr-time">
+                        <strong>{{ next_reservation.reservation_time }}</strong>
+                        <span>{{ next_reservation.reservation_date }}</span>
+                    </div>
+                </div>
+                <div class="nr-meta">
+                    <span><span class="material-symbols-outlined" style="font-size:15px;">group</span> {{ next_reservation.guests }} guests</span>
+                </div>
+            </div>
+            {% else %}
+            <div class="empty-state">
+                No upcoming reservations yet — find a table to get started.
+            </div>
+            {% endif %}
+        </div>
+
+        <a href="{{ url_for('main.my_reservations') }}" class="btn btn-outline btn-block">
+            View All Bookings
+            <span class="material-symbols-outlined" style="font-size:18px;">arrow_forward</span>
+        </a>
+    </div>
+
+    {% if current_user.role == "admin" %}
+    <div class="bento-side glass-card bento-card" style="grid-column: span 12;">
+        <div>
+            <div class="bento-top">
+                <span class="eyebrow-pill">
+                    <span class="material-symbols-outlined" style="font-size:16px;">admin_panel_settings</span>
+                    Staff tools
+                </span>
+                <div class="bento-icon">
+                    <span class="material-symbols-outlined">tune</span>
+                </div>
+            </div>
+            <h2>Admin dashboard</h2>
+            <p class="lede">Manage tables, approve or reject reservations, and update the photo gallery.</p>
+        </div>
+        <a href="{{ url_for('main.admin_dashboard') }}" class="btn btn-primary" style="align-self:flex-start;">
+            Go to Admin Dashboard
+            <span class="material-symbols-outlined" style="font-size:18px;">arrow_forward</span>
+        </a>
+    </div>
+    {% endif %}
+
+</div>
+
+{% endblock %}

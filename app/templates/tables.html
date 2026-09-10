@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Restaurant Tables{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <h1>Restaurant Tables</h1>
+    <a href="{{ url_for('main.add_table') }}" class="btn btn-primary">Add New Table</a>
+</div>
+
+{% if tables %}
+
+    <div class="card-grid">
+        {% for table in tables %}
+        <div class="glass-card action-card">
+            {% if table.image_url %}
+                <img src="{{ table.image_url }}" alt="Table {{ table.table_number }}" class="table-photo">
+            {% else %}
+                <div class="table-photo-placeholder">🪑</div>
+            {% endif %}
+            <h3>Table {{ table.table_number }}</h3>
+            <p>Capacity: {{ table.capacity }}</p>
+            <a href="{{ url_for('main.delete_table', id=table.id) }}" class="btn btn-outline btn-sm">Delete</a>
+        </div>
+        {% endfor %}
+    </div>
+
+{% else %}
+
+    <div class="glass-card text-center">
+        <p class="text-muted" style="margin:0;">No tables have been added yet.</p>
+    </div>
+
+{% endif %}
+
+{% endblock %}

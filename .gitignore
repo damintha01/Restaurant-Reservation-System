@@ -1,1 +1,9 @@
 venv/
+__pycache__/
+*.pyc
+
+.env
+
+instance/
+restaurant.db
+create_admin.py/

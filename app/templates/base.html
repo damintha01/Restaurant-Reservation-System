@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}KAndyn Restaurant{% endblock %}</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,400..600,0..1,-25..0&display=swap" rel="stylesheet">
+
+    <link href="{{ url_for('static', filename='css/app.css') }}" rel="stylesheet">
+</head>
+<body class="app-body">
+
+    <div class="navbar-wrap">
+    <nav class="navbar">
+
+        <a class="navbar-brand" href="{{ url_for('main.dashboard') if current_user.is_authenticated else url_for('main.index') }}">
+            🍽️ KAndyn Restaurant
+        </a>
+
+        <ul class="navbar-nav">
+
+            <li><a class="nav-link" href="{{ url_for('main.gallery') }}">Gallery</a></li>
+            <li><a class="nav-link" href="{{ url_for('main.about') }}">About</a></li>
+
+            {% if current_user.is_authenticated %}
+
+                <li><a class="nav-link" href="{{ url_for('main.dashboard') }}">Dashboard</a></li>
+
+                {% if current_user.role == "admin" %}
+                    <li><a class="nav-link" href="{{ url_for('main.admin_dashboard') }}">Admin</a></li>
+                    <li><a class="nav-link" href="{{ url_for('main.view_tables') }}">Tables</a></li>
+                    <li><a class="nav-link" href="{{ url_for('main.admin_reservations') }}">Reservations</a></li>
+                    <li><a class="nav-link" href="{{ url_for('main.upload_restaurant_image') }}">Upload Image</a></li>
+                {% else %}
+                    <li><a class="nav-link" href="{{ url_for('main.search_tables') }}">Book Table</a></li>
+                    <li><a class="nav-link" href="{{ url_for('main.my_reservations') }}">My Reservations</a></li>
+                {% endif %}
+
+                <li><span class="nav-user">Hi, {{ current_user.username }}</span></li>
+                <li><a class="nav-link" href="{{ url_for('main.logout') }}">Logout</a></li>
+
+            {% else %}
+
+                <li><a class="nav-link" href="{{ url_for('main.index') }}">Login</a></li>
+                <li><a class="nav-link" href="{{ url_for('main.index', tab='register') }}">Register</a></li>
+
+            {% endif %}
+
+        </ul>
+
+    </nav>
+    </div>
+
+    <div class="flashes">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="flash">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <main class="page">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+
+        <div class="footer-inner">
+
+            <div class="footer-brand">
+                <div class="brand-name">🍽️ KAndyn Restaurant</div>
+                <p>Book a table in seconds, browse our gallery, and let us take care of the rest.</p>
+            </div>
+
+            <div class="footer-links">
+
+                <div class="footer-col">
+                    <h4>Explore</h4>
+                    <a href="{{ url_for('main.gallery') }}">Gallery</a>
+                    <a href="{{ url_for('main.about') }}">About</a>
+                    <a href="{{ url_for('main.index') }}">Login / Register</a>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Contact</h4>
+                    <span>📍 93 Dalada Street, Kandy, Sri Lanka</span>
+                    <span>📞 +94 (812) 306-050</span>
+                    <span>✉️ hello@restaurant.com</span>
+                </div>
+
+                <div class="footer-col">
+                    <h4>Hours</h4>
+                    <span>Mon–Fri: 11am – 10pm</span>
+                    <span>Sat–Sun: 10am – 11pm</span>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="footer-bottom">
+            &copy; {{ current_year }} KAndyn Restaurant. All rights reserved.
+        </div>
+
+    </footer>
+
+</body>
+</html>

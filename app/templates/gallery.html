@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}Gallery{% endblock %}
+
+{% block content %}
+
+<div class="gallery-hero">
+    <h1>Welcome to Our Restaurant</h1>
+    <p>Take a look at our food, drinks, and dining space</p>
+</div>
+
+<div class="page-header">
+    <h1 style="font-size:1.5rem;">Photo Gallery</h1>
+
+    {% if current_user.is_authenticated and current_user.role == "admin" %}
+        <a href="{{ url_for('main.upload_restaurant_image') }}" class="btn btn-primary">Upload Image</a>
+    {% endif %}
+</div>
+
+{% if images %}
+
+    <div class="gallery-grid">
+        {% for image in images %}
+        <div class="gallery-item">
+            <img src="{{ image.image_url }}" alt="{{ image.title }}">
+            <div class="gallery-caption">
+                <h5>{{ image.title }}</h5>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+{% else %}
+
+    <div class="glass-card text-center">
+        <p class="text-muted" style="margin:0;">No images have been uploaded yet.</p>
+    </div>
+
+{% endif %}
+
+{% endblock %}

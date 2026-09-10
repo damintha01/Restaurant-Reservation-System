@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}Upload Image{% endblock %}
+
+{% block content %}
+
+<div class="glass-card form-card">
+
+    <h2>Upload Restaurant Image</h2>
+
+    <form method="POST" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+
+        <div class="field">
+            {{ form.title.label }}
+            {{ form.title(placeholder="e.g. Our Dining Room") }}
+            {% for error in form.title.errors %}
+                <div class="field-error">{{ error }}</div>
+            {% endfor %}
+        </div>
+
+        <div class="field">
+            {{ form.image.label }}
+            {{ form.image() }}
+            {% for error in form.image.errors %}
+                <div class="field-error">{{ error }}</div>
+            {% endfor %}
+        </div>
+
+        {{ form.submit(class="btn btn-primary btn-block") }}
+    </form>
+
+    <p class="form-footer">
+        <a href="{{ url_for('main.gallery') }}">View Gallery</a>
+    </p>
+
+</div>
+
+{% endblock %}

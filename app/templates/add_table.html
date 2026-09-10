@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}Add Table{% endblock %}
+
+{% block content %}
+
+<div class="glass-card form-card">
+
+    <h2>Add Table</h2>
+
+    <form method="POST" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+
+        <div class="field">
+            {{ form.table_number.label }}
+            {{ form.table_number(placeholder="e.g. 5") }}
+            {% for error in form.table_number.errors %}
+                <div class="field-error">{{ error }}</div>
+            {% endfor %}
+        </div>
+
+        <div class="field">
+            {{ form.capacity.label }}
+            {{ form.capacity(placeholder="e.g. 4") }}
+            {% for error in form.capacity.errors %}
+                <div class="field-error">{{ error }}</div>
+            {% endfor %}
+        </div>
+
+        <div class="field">
+            {{ form.image.label }}
+            {{ form.image() }}
+            {% for error in form.image.errors %}
+                <div class="field-error">{{ error }}</div>
+            {% endfor %}
+        </div>
+
+        {{ form.submit(class="btn btn-primary btn-block") }}
+    </form>
+
+    <p class="form-footer">
+        <a href="{{ url_for('main.view_tables') }}">View Tables</a>
+    </p>
+
+</div>
+
+{% endblock %}

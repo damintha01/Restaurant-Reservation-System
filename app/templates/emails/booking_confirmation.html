@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Booking Confirmed</title>
+</head>
+<body style="margin:0; padding:0; background-color:#f2f2f7; font-family:'Segoe UI', Helvetica, Arial, sans-serif;">
+
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f2f2f7; padding:32px 12px;">
+    <tr>
+        <td align="center">
+
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px; background-color:#ffffff; border-radius:16px; overflow:hidden; box-shadow:0 10px 30px rgba(0,0,0,0.08);">
+
+                <!-- Header banner -->
+                <tr>
+                    <td style="background-color:#2fbf71; background-image:linear-gradient(120deg,#11998e,#38ef7d); padding:44px 32px; text-align:center;">
+                        <div style="font-size:42px; line-height:1;">✅</div>
+                        <h1 style="margin:16px 0 4px; color:#ffffff; font-size:24px; font-weight:700;">
+                            Booking Confirmed!
+                        </h1>
+                        <p style="margin:0; color:rgba(255,255,255,0.9); font-size:14px;">
+                            Your table has been reserved
+                        </p>
+                    </td>
+                </tr>
+
+                <!-- Body -->
+                <tr>
+                    <td style="padding:36px 32px;">
+                        <p style="margin:0 0 16px; color:#222222; font-size:16px; line-height:1.6;">
+                            Hi <strong>{{ customer_name }}</strong>,
+                        </p>
+
+                        <p style="margin:0 0 24px; color:#444444; font-size:15px; line-height:1.7;">
+                            Great news! Your reservation has been reviewed and
+                            <strong>approved</strong> by our team. Here are your booking details:
+                        </p>
+
+                        <!-- Details card -->
+                        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f7f9fc; border-radius:12px; margin-bottom:28px;">
+                            <tr>
+                                <td style="padding:18px 20px; font-size:14px; color:#888888; width:40%;">📅&nbsp; Date</td>
+                                <td style="padding:18px 20px; font-size:14px; color:#222222; font-weight:700; text-align:right;">
+                                    {{ reservation.reservation_date }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding:0 20px;" colspan="2"><hr style="border:none; border-top:1px solid #e8ebf0; margin:0;"></td>
+                            </tr>
+                            <tr>
+                                <td style="padding:18px 20px; font-size:14px; color:#888888;">🕒&nbsp; Time</td>
+                                <td style="padding:18px 20px; font-size:14px; color:#222222; font-weight:700; text-align:right;">
+                                    {{ reservation.reservation_time }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding:0 20px;" colspan="2"><hr style="border:none; border-top:1px solid #e8ebf0; margin:0;"></td>
+                            </tr>
+                            <tr>
+                                <td style="padding:18px 20px; font-size:14px; color:#888888;">👥&nbsp; Guests</td>
+                                <td style="padding:18px 20px; font-size:14px; color:#222222; font-weight:700; text-align:right;">
+                                    {{ reservation.guests }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding:0 20px;" colspan="2"><hr style="border:none; border-top:1px solid #e8ebf0; margin:0;"></td>
+                            </tr>
+                            <tr>
+                                <td style="padding:18px 20px; font-size:14px; color:#888888;">🪑&nbsp; Table</td>
+                                <td style="padding:18px 20px; font-size:14px; color:#222222; font-weight:700; text-align:right;">
+                                    #{{ reservation.table.table_number }}
+                                </td>
+                            </tr>
+                        </table>
+
+                        <p style="margin:0 0 28px; color:#444444; font-size:14px; line-height:1.7;">
+                            Please arrive a few minutes early. If your plans change,
+                            you can review your bookings anytime from your account.
+                        </p>
+
+                        <!-- CTA button -->
+                        <table role="presentation" cellpadding="0" cellspacing="0" style="margin:0 auto;">
+                            <tr>
+                                <td style="border-radius:50px; background-color:#2575fc; background-image:linear-gradient(120deg,#ff6a9c,#2575fc);">
+                                    <a href="{{ reservations_url }}" style="display:inline-block; padding:14px 32px; color:#ffffff; font-size:15px; font-weight:700; text-decoration:none; border-radius:50px;">
+                                        View My Reservations
+                                    </a>
+                                </td>
+                            </tr>
+                        </table>
+
+                    </td>
+                </tr>
+
+                <!-- Footer -->
+                <tr>
+                    <td style="background-color:#fafafa; padding:24px 32px; text-align:center; border-top:1px solid #eeeeee;">
+                        <p style="margin:0 0 4px; color:#888888; font-size:12px;">
+                            93 Dalada Street, Kandy, Sri Lanka &nbsp;|&nbsp; +94 (812) 306-050
+                        </p>
+                        <p style="margin:0; color:#aaaaaa; font-size:12px;">
+                            We can't wait to welcome you.
+                        </p>
+                    </td>
+                </tr>
+
+            </table>
+
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>
