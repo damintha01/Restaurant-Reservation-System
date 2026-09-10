@@ -2,12 +2,12 @@ from datetime import datetime, timezone
 
 from flask import Flask
 from sqlalchemy import inspect, text
+from werkzeug.security import generate_password_hash
+
 from .config import Config
 from .models import db, login_manager, User
 from .routes import main
 import cloudinary
-from app.models import User
-from werkzeug.security import generate_password_hash
 
 
 def create_app():
@@ -23,27 +23,13 @@ def create_app():
     @login_manager.user_loader
     def load_user(user_id):
         return User.query.get(int(user_id))
-    ##do this for deploy in render free
+
+    # Everything below needs an app context (DB queries, engine inspection),
+    # so it must all live inside this one "with" block, correctly indented -
+    # this broke twice before by code ending up dedented out of the block.
     with app.app_context():
+
         db.create_all()
-        admin = User.query.filter_by(
-        email="admin@gmail.com"
-    ).first()
-
-    if not admin:
-
-        admin = User(
-            username="admin",
-            email="admin@gmail.com",
-            password_hash=generate_password_hash(
-                "Admin123"
-            ),
-            role="admin"
-        )
-
-        db.session.add(admin)
-        db.session.commit()
-        
 
         # db.create_all() only creates missing tables, it doesn't add new
         # columns to a table that already exists. Since this project has
@@ -66,10 +52,25 @@ def create_app():
                     )
                 )
                 db.session.commit()
-    
+
+        # Make sure there's always an admin account to log in with, even
+        # on a brand-new database (e.g. a fresh deploy on Render where
+        # create_admin.py was never run manually).
+        admin = User.query.filter_by(email="admin@gmail.com").first()
+
+        if not admin:
+
+            admin = User(
+                username="admin",
+                email="admin@gmail.com",
+                password_hash=generate_password_hash("Admin123"),
+                role="admin"
+            )
+
+            db.session.add(admin)
+            db.session.commit()
 
     app.register_blueprint(main)
-    
 
     # Makes {{ current_year }} available in every template (used in the footer)
     @app.context_processor
