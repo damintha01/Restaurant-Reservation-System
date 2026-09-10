@@ -31,6 +31,7 @@ from .decorators import admin_required
 from .cloudinary_service import upload_image
 from .services.email_service import (
     send_booking_confirmation,
+    send_booking_rejected,
     send_welcome_email
 )
 
