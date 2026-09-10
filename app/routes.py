@@ -642,6 +642,12 @@ def reject_reservation(id):
 
     db.session.commit()
 
+    send_booking_rejected(
+        customer_email=reservation.customer.email,
+        customer_name=reservation.customer.username,
+        reservation=reservation
+    )
+
     flash(
         "Reservation rejected."
     )
